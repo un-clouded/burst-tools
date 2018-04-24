@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+#
+# Scans plot drives mounted here and reports:
+#
+#  - The number of disparate account IDs across the plots
+#  - Any overlaps
+#  - Sum plot size
+#
+# Sample file structure:
+#
+#     $ ls
+#     1TB-c499  250G-90fa  check
+#
+#     $ find 1TB-c499/
+#     1TB-c499/
+#     1TB-c499/plots
+#     1TB-c499/plots/16331706345083682069_692590878280952117_1048576_1048576.plotting
+#     1TB-c499/plots/16331706345083682069_2162400295742801463_2097152_2097152
+#     1TB-c499/lost+found
+#
+# I'm exporting my plot devices via NFS so I can access them all in one place
+# for inspection (not mining).
+#
+
+Span = Struct.new :path, :base, :length
+
+account_ids = []
+spans = []
+sum_size = 0
+
+Dir.entries('.').each do |name|
+  next if (%w[. ..].include? name) || (! File.directory? name)
+  dir = File.join  name, 'plots'
+  Dir.entries(dir).each do |name|
+    next if (%w[. ..].include? name) || (name =~ /\.plotting$/)
+    path = File.join  dir, name
+
+    account_id, first_nonce, nonce_count, stagger = name.split('_').map {|s| s.to_i}
+    account_ids << account_id unless account_ids.include? account_id
+
+    spans << (Span.new  path, first_nonce, nonce_count)
+
+    sum_size += File.stat(path).size
+  end
+end
+
+spans.sort! {|a, b| a.base <=> b.base}
+(0 .. spans.count - 2).each do |i|
+  span, next_span = [i, i+1].map {|i| spans[i]}
+  # Two spans overlap unless the last member of the earlier span is earlier
+  # than the first member of the later span
+  last_member = span.base + span.length - 1
+  puts "WARNING: #{span.path} overlaps #{next_span.path}" unless last_member < next_span.base
+end
+
+puts "Account IDs:  #{account_ids.join '  '}"
+puts "Sum plot size:  %.1f TB"% ((sum_size >> 30) / 1024.0)
+
