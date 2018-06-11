@@ -1,0 +1,8 @@
+Package: burstcoincg
+Version: 2.2.1
+Architecture: amd64
+Maintainer: None
+Depends: openjdk-8-jre-headless, mariadb-server, dbconfig-common, libtommath1, adduser
+Description: BRS 2.2.1 wallet
+ Burst Reference Software version 2.2.1 wallet
+

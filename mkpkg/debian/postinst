@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# Old configuration files should be renamed if present
+[ -e /etc/burstcoincg/nxt.properties ]  &&  mv /etc/burstcoincg/nxt.properties  /etc/burstcoincg/brs.properties
+sed -i 's/nxt.db/DB./' /etc/burstcoincg/brs.properties
+
+exit 0
+

@@ -1,0 +1,13 @@
+[Unit]
+Description=burstcoincg
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/share/burstcoincg
+ExecStart=/usr/bin/java -cp burst.jar:conf:/etc/burstcoincg brs.Burst
+Restart=always
+RestartSec=90
+User=burstcoincg
+
+[Install]
+WantedBy=multi-user.target
