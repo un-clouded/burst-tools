@@ -7,7 +7,7 @@ SRCFILE=burstcoin-2.2.1.zip
 DESTDIR=/tmp/$(PROJECT)_$(REVISION)_$(ARCH)
 TMPDIR=/tmp/burstcoin
 SHAREDIR=$(DESTDIR)/usr/share/$(PROJECT)
-ETCDIR=$(DESTDIR)/etc/burstcoincg
+ETCDIR=$(DESTDIR)/etc/$(PROJECT)
 BINDIR=$(DESTDIR)/usr/bin
 
 .SILENT:
@@ -34,7 +34,7 @@ reminder:
 	install --mode=0644 --preserve-timestamps  $(TMPDIR)/conf/*  $(ETCDIR)
 	install --directory  $(DESTDIR)/lib/systemd
 	install --directory  $(DESTDIR)/lib/systemd/system
-	install --mode=0644 --preserve-timestamps  systemd/burstcoincg.service  $(DESTDIR)/lib/systemd/system
+	install --mode=0644 --preserve-timestamps  systemd/$(PROJECT).service  $(DESTDIR)/lib/systemd/system
 	install --directory  $(DESTDIR)/DEBIAN
 	install  debian/*  $(DESTDIR)/DEBIAN
 	dpkg --build  $(DESTDIR)
