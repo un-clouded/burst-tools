@@ -142,7 +142,7 @@
       line = lines[l];
       groups = line.match(/[^\\\/]+$/);
       file_name = groups[0];
-      if (groups = file_name.match(/^\d+_(\d+)_(\d+)_\d+$/)) {
+      if (groups = file_name.match(/^\d+_(\d+)_(\d+)(_\d+)?$/)) {
         ref1 = groups.slice(1, 3), first_nonce = ref1[0], nonce_count = ref1[1];
         for (m = 0, len2 = BUCKETS.length; m < len2; m++) {
           bucket = BUCKETS[m];

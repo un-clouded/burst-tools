@@ -135,7 +135,7 @@ parse = (data) ->
     # Anything prior to the last path separator should be ignored
     groups = line.match /[^\\/]+$/
     file_name = groups[0]
-    if groups = file_name.match /^\d+_(\d+)_(\d+)_\d+$/
+    if groups = file_name.match /^\d+_(\d+)_(\d+)(_\d+)?$/
       [first_nonce, nonce_count] = groups[1..2]
       # This algorithm is slow but easy to comprehend
       # Go through each bucket
